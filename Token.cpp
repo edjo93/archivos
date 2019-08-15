@@ -1,10 +1,13 @@
 #include<iostream>
 #include<fstream>
 #include<string.h>
+#include<vector>
 using namespace std;
 string token(string , string , int );
 void agregar();
 void listar();
+void eliminar();
+void modificar();
 int main(){
 	/*
 	string c="laurate,unitec;ceutec,tgu,proceres";
@@ -12,7 +15,7 @@ int main(){
 	*/
 	char opcion;
 	do{
-		cout<<"\na-agregar\nb-listar\nc-salir\n?:";
+		cout<<"\na-agregar\nb-listar\nc-eliminar\nd-modificar\ne-salir\n?:";
 		cin>>opcion;
 		switch(opcion){
 			case'a':
@@ -22,12 +25,17 @@ int main(){
 				listar();
 				break;
 			case'c':
-				cout<<"\nhasta luego\n"	;
+				eliminar();
+				break;
+			case'd':
+				modificar();
+				break;
+			case'e':
 				break;
 			default:
 				cout<<"\nno ingreso una opcion correcta\n";
 		}
-	}while(opcion!='c');
+	}while(opcion!='e');
 	
 	return 0;
 }
@@ -79,5 +87,78 @@ void listar(){
 		
 	}
 		
+}
+//modificar es la mezcla entre escribir y leer y parsear
+
+
+void eliminar(){
+	fstream leer;
+	ofstream escribir;
+	vector<string> lista;
+	string linea;
+	int cent=0;
+	leer.open("./prueba.txt");
+	string codigo;
+	cout<<"codigo a eliminar: ";
+	cin>>codigo;
+	while(!leer.eof()){//cargar al vector
+		getline(leer,linea);
+		if(token(linea,";",1)==codigo){
+			cent=1;
+		}else{
+			if(linea[0]!='\0'){//no es eof
+				lista.push_back(linea);
+			}
+			
+		}
+	}
+	leer.close(); 
+	//sobreescribir el archivo
+	if(cent==1){
+		escribir.open("./prueba.txt");
+		for(int i=0;i<lista.size();i++){
+			escribir<<lista[i]<<endl;
+		}
+	}
+	
+}
+
+void modificar(){
+	fstream leer;
+	ofstream escribir;
+	vector<string> lista;
+	string linea;
+	int cent=0;
+	leer.open("./prueba.txt");
+	string codigo;
+	cout<<"codigo a modificar: ";
+	cin>>codigo;
+	while(!leer.eof()){//cargar al vector
+		getline(leer,linea);
+		if(token(linea,";",1)==codigo){
+			cent=1;
+			//si agrego el nodo pero modificado
+			string vn,ve;
+			cout<<"nombre: ";
+			cin>>vn;
+			cout<<"edad: ";
+			cin>>ve;
+			lista.push_back(codigo+";"+vn+";"+ve);
+		}else{
+			if(linea[0]!='\0'){//no es eof
+				lista.push_back(linea);
+			}
+			
+		}
+	}
+	leer.close(); 
+	//sobreescribir el archivo
+	if(cent==1){
+		escribir.open("./prueba.txt");
+		for(int i=0;i<lista.size();i++){
+			escribir<<lista[i]<<endl;
+		}
+	}
+	
 }
 

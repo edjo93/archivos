@@ -1,4 +1,3 @@
-234;josue;3
-100;juan;34
+234;josue;26
 34;josue;12
-234;dsf;3
+234;ghnj;gh
